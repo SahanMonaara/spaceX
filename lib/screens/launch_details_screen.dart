@@ -8,7 +8,6 @@ import 'package:spacex_launch/helpers/utils.dart';
 import 'package:spacex_launch/models/launch.dart';
 import 'package:spacex_launch/network/net_exception.dart';
 import 'package:spacex_launch/providers/launch_provider.dart';
-import 'package:spacex_launch/screens/launches_list_screen.dart';
 import 'package:spacex_launch/screens/widgets/launch_item_list_tile.dart';
 import '../network/net_result.dart';
 
@@ -30,10 +29,8 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
   void didChangeDependencies() {
     if (!_isInit) {
       Map data = ModalRoute.of(context)?.settings.arguments as Map;
-      if (data != null) {
-        if (data['title'] != null) title = data['title'];
-        if (data['id'] != null) id = data['id'];
-      }
+      if (data['title'] != null) title = data['title'];
+      if (data['id'] != null) id = data['id'];
       if (id != null) {
         getLaunchesList(id!);
       }
@@ -42,6 +39,13 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
     super.didChangeDependencies();
   }
 
+  /// > This function is used to get the launch details of a particular launch
+  ///
+  /// Args:
+  ///   id (String): The id of the launch you want to get details for.
+  ///
+  /// Returns:
+  ///   The result of the function is a Future<Result>
   void getLaunchesList(String id) async {
     Provider.of<LaunchProvider>(context, listen: false)
         .changeDetailDataLoadingStatus(true);
@@ -131,7 +135,7 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
                         textStyle: const TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w700),
                         duration:
-                        getDuration(launchProvider.currentLaunch!.dateUnix),
+                            getDuration(launchProvider.currentLaunch!.dateUnix),
                         separatorType: SeparatorType.title,
                         slideDirection: SlideDirection.down,
                       ),
@@ -153,17 +157,26 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
                 ),
                 Positioned(
                     bottom: 0,
-                    child: buildSocialMediaList(launchProvider.currentLaunch?.links))
+                    child: buildSocialMediaList(
+                        launchProvider.currentLaunch?.links))
               ],
             ),
           );
         }));
   }
 
-  buildSocialMediaList(Links? links) {
+  /// It builds a list of social media icons.
+  ///
+  /// Args:
+  ///   links (Links): This is the object that contains the links to the social media
+  /// sites.
+  ///
+  /// Returns:
+  ///   A Container widget with a Row widget inside it.
+  Widget buildSocialMediaList(Links? links) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(bottom: 40),
+      padding: const EdgeInsets.only(bottom: 40),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -186,7 +199,9 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
                   Utils.launchWebUrl(links?.article ?? "");
                 },
                 child: SizedBox(
-                    height: 45, width: 45, child: Image.asset(AppAssets.article)),
+                    height: 45,
+                    width: 45,
+                    child: Image.asset(AppAssets.article)),
               )),
           Visibility(
               visible: links?.wikipedia != null,
@@ -204,6 +219,14 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
     );
   }
 
+  /// It returns a widget that displays a title and a detail.
+  ///
+  /// Args:
+  ///   title (String): The title of the text
+  ///   detail (String): The detail text to be displayed.
+  ///
+  /// Returns:
+  ///   A SizedBox widget with a width of the width of the screen.
   Widget buildDetailText(String title, String detail) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
@@ -227,6 +250,14 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
     );
   }
 
+  /// If the imageUrl is not null, then display the image, otherwise display a grey
+  /// box
+  ///
+  /// Args:
+  ///   imageUrl (String): The URL of the image to display.
+  ///
+  /// Returns:
+  ///   A widget that displays an image.
   Widget _buildImage(String? imageUrl) {
     return Center(
       child: ClipRRect(

@@ -2,13 +2,17 @@ import 'package:spacex_launch/helpers/app_logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
-  static Future<void> launchWebUrl(String url) async {
+  /// It launches a url in the browser.
+  ///
+  /// Args:
+  ///   urlLink (String): The URL to be opened.
+  static Future<void> launchWebUrl(String urlLink) async {
     try {
-      Uri _url = Uri.parse(url);
-      Log.debug("launchUrl : $_url");
+      Uri url = Uri.parse(urlLink);
+      Log.debug("launchUrl : $url");
 
-      if (!await launchUrl(_url)) {
-        throw 'Could not launch $_url';
+      if (!await launchUrl(url)) {
+        throw 'Could not launch $url';
       }
     } catch (e) {
       Log.debug("launchUrl error $e");

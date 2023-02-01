@@ -1,3 +1,4 @@
+// ignore_for_file: constant_identifier_names
 import 'dart:convert';
 import 'package:spacex_launch/models/launch.dart';
 
@@ -17,6 +18,10 @@ class LaunchService {
 
   LaunchService._internal();
 
+  /// It fetches the list of launches from the SpaceX API.
+  ///
+  /// Returns:
+  ///   Result object
   Future<Result> fetchLaunchesList() async {
     Result result = Result();
     try {
@@ -29,7 +34,6 @@ class LaunchService {
       Log.debug("result is **** ${result.result}");
 
       if (result.exception == null && result.result != "") {
-        var data = json.decode(result.result);
         result.result = launchFromJson(result.result);
       }
       return result;
@@ -43,6 +47,13 @@ class LaunchService {
     }
   }
 
+  /// It fetches the launch details from the server.
+  ///
+  /// Args:
+  ///   id (String): The id of the launch you want to fetch details for.
+  ///
+  /// Returns:
+  ///   Result object
   Future<Result> fetchLaunchDetails(String id) async {
     Result result = Result();
     try {

@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+
+/// It's a simple class that allows you to print out different types of logs
 // ignore_for_file: avoid_print
 
 class Log {
@@ -8,25 +11,25 @@ class Log {
 
   static void debug(String log) {
     if (_isShowDebug) {
-      print("[DEBUG]: $log");
+      debugPrint("[DEBUG]: $log");
     }
   }
 
   static void info(String msg) {
     if (_isInfoShow) {
-      print("\x1b[33m[INFO] $msg\x1b[0m");
+      debugPrint("\x1b[33m[INFO] $msg\x1b[0m");
     }
   }
 
   static void warn(String msg) {
     if (_isWarnShow) {
-      print("[WARN] $msg");
+      debugPrint("[WARN] $msg");
     }
   }
 
   static void err(String msg) {
     if (_isErrShow) {
-      print("\x1b[31m[ERR] $msg\x1b[0m");
+      debugPrint("\x1b[31m[ERR] $msg\x1b[0m");
     }
   }
 }

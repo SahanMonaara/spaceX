@@ -60,6 +60,10 @@ class Net {
     return await isOk(response);
   }
 
+  /// It makes a GET request to the server.
+  ///
+  /// Returns:
+  ///   A Future<http.Response>
   Future<http.Response> get() async {
     Log.debug("request - GET | url - $url | ");
     String url_ =
@@ -77,6 +81,11 @@ class Net {
     return response;
   }
 
+  /// It makes a POST request to the given url with the given body and query
+  /// parameters.
+  ///
+  /// Returns:
+  ///   A Future<http.Response>
   Future<http.Response> post() async {
     String url_ =
         "${getPathParameters(url)}?${Uri(queryParameters: queryParam).query}";
@@ -98,6 +107,10 @@ class Net {
     return response;
   }
 
+  /// It makes a PUT request to the server.
+  ///
+  /// Returns:
+  ///   A Future<http.Response>
   Future<http.Response> put() async {
     Log.debug("request - PUT | url - $url | ");
     String url_ =
@@ -116,6 +129,10 @@ class Net {
     return response;
   }
 
+  /// It makes a DELETE request to the server.
+  ///
+  /// Returns:
+  ///   A Future<http.Response>
   Future<http.Response> delete() async {
     String url_ =
         "${getPathParameters(url)}?${Uri(queryParameters: queryParam).query}";
@@ -137,6 +154,10 @@ class Net {
     return response;
   }
 
+  /// A function that makes a multipart request to the server.
+  ///
+  /// Returns:
+  ///   A Future<http.Response>
   Future<http.Response> multiPart() async {
     List<http.MultipartFile> multipartFiles = [];
 
@@ -153,7 +174,7 @@ class Net {
     request.headers.addAll(headers);
     fields ??= {};
     fields!.forEach((key, value) {
-      request.fields['$key'] = value;
+      request.fields[key] = value;
     });
     imagePathList ??= {};
     List<dynamic> data = imagePathList!.entries.cast().toList();
@@ -181,12 +202,21 @@ class Net {
     return res;
   }
 
+  /// * Iterate over the entries in the map, and print each key and value
+  ///
+  /// Args:
+  ///   map (Map): The map to print.
   printMap(Map map) {
     for (final e in map.entries) {
       Log.debug('${e.key} = ${e.value}');
     }
   }
 
+  /// If the headers map is null, initialize it to an empty map, then add the
+  /// Content-Type and Accept headers to it
+  ///
+  /// Returns:
+  ///   A map of headers.
   Future<Map<String, String>> getHeadersForRequest() async {
     headers ??= {};
     headers!.putIfAbsent("Content-Type", () => "application/json");
@@ -194,6 +224,14 @@ class Net {
     return headers!;
   }
 
+  /// It takes a url and replaces the path parameters with the values provided in
+  /// the pathParam map
+  ///
+  /// Args:
+  ///   netUrl (String): The url that you want to replace the path parameters with.
+  ///
+  /// Returns:
+  ///   The url with the path parameters replaced.
   String getPathParameters(String netUrl) {
     String url = netUrl;
     pathParam ??= {};
@@ -206,6 +244,15 @@ class Net {
     return url;
   }
 
+  /// If the response is not ok, then check if the retry is enabled, if it is, then
+  /// check if the retry count is less than the max retry count, if it is, then
+  /// retry again, otherwise, return the error
+  ///
+  /// Args:
+  ///   response (http): The response of the request
+  ///
+  /// Returns:
+  ///   A Future<Result>
   Future<Result> isOk(http.Response response) async {
     Result result = Result();
     result.statusCode = response.statusCode;
@@ -217,16 +264,20 @@ class Net {
       Log.err("error found");
       if (!isRetryEnable) {
         try {
-          Log.err("network error ${response.statusCode} recorded in firebase!");
-        } catch (err) {}
+          Log.err("network error ${response.statusCode} recorded");
+        } catch (err) {
+          Log.err("network error ${response.statusCode} recorded");
+        }
         Log.debug("retry disabled!");
         result.exception = netException;
         return result;
       }
       if (_retryCount >= _retryMaxCount) {
         try {
-          Log.err("network error ${netException.code} recorded in firebase!");
-        } catch (err) {}
+          Log.err("network error ${netException.code} recorded");
+        } catch (err) {
+          Log.err("network error ${response.statusCode} recorded");
+        }
         Log.err("retry failed!");
         result.exception = netException;
         return result;
@@ -241,6 +292,11 @@ class Net {
     return result;
   }
 
+  /// > It takes a url, gets the path parameters, and then adds the query parameters
+  /// to the end of the url
+  ///
+  /// Returns:
+  ///   A Future<String>
   Future<String> processUrl() async {
     return "${getPathParameters(url)}?${Uri(queryParameters: queryParam).query}";
   }

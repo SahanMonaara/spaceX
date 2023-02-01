@@ -3,6 +3,15 @@ import '../helpers/app_logger.dart';
 import 'net_exception.dart';
 
 class NetworkErrorHandler {
+  /// It takes a response from the server and returns a `NetException` object if the
+  /// response is not a success
+  ///
+  /// Args:
+  ///   response (http): The response object from the http call.
+  ///   ignoreCodes (List<int>): List of status codes that you want to ignore.
+  ///
+  /// Returns:
+  ///   A function that takes a response and an optional list of integers.
   static NetException? handleError(http.Response response,
       {List<int>? ignoreCodes}) {
     Log.debug("NetworkErrorHandler  ${response.statusCode}");

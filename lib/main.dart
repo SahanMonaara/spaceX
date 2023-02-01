@@ -19,10 +19,8 @@ class MyApp extends StatelessWidget {
         title: 'Spacex',
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          fontFamily: 'bankgothic'
         ),
         routes: AppRoutes.routes,
-        // home: const SplashScreen(),
         initialRoute: SplashScreen.routeName,
       ),
     );

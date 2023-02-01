@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:spacex_launch/common/app_colors.dart';
 import 'package:spacex_launch/network/net_exception.dart';
@@ -8,7 +7,6 @@ import 'package:spacex_launch/providers/launch_provider.dart';
 import 'package:spacex_launch/screens/launch_details_screen.dart';
 import 'package:spacex_launch/screens/widgets/launch_item_list_tile.dart';
 
-import '../common/app_assets.dart';
 import '../shimmers/card_shimmer.dart';
 
 class LaunchesListScreen extends StatefulWidget {
@@ -27,23 +25,16 @@ class _LaunchesListScreenState extends State<LaunchesListScreen> {
 
   @override
   void initState() {
-    _scrollController.addListener(scrollListener);
     super.initState();
   }
 
-  void scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      // if (Provider.of<NotificationProvider>(context, listen: false)
-      //         .notification
-      //         .nextPageUrl !=
-      //     null) {
-      //   notifyTabCurrentPage += notifyTabCurrentPage;
-      //   // getRequestedRides(page: notifyTabCurrentPage);
-      // }
-    }
-  }
-
+  /// It gets the list of launches from the API.
+  ///
+  /// Args:
+  ///   page (int): The page number to be fetched.
+  ///
+  /// Returns:
+  ///   Nothing
   getLaunchesList({int? page}) async {
     if (page == null || page == 1) {}
     Provider.of<LaunchProvider>(context, listen: false)
@@ -57,6 +48,7 @@ class _LaunchesListScreenState extends State<LaunchesListScreen> {
     }
   }
 
+  /// It refreshes the list of launches.
   Future<void> onRefresh() async {
     await getLaunchesList();
   }
@@ -108,7 +100,7 @@ class _LaunchesListScreenState extends State<LaunchesListScreen> {
                             'title': launchProvider.launchesList[index].name
                           }),
                       child: LaunchItemListTile(
-                        singleDetail:launchProvider.launchesList[index],
+                        singleDetail: launchProvider.launchesList[index],
                       ),
                     ));
               });
@@ -117,4 +109,3 @@ class _LaunchesListScreenState extends State<LaunchesListScreen> {
     );
   }
 }
-

@@ -11,6 +11,7 @@ import '../common/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = '/splash-screen';
+
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
@@ -19,19 +20,25 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Timer? _timer;
+
   @override
   void initState() {
-    getInitialData();
     super.initState();
+    getInitialData();
   }
 
+  /// It fetches the data from the API and stores it in the provider.
   getInitialData() async {
     await Provider.of<LaunchProvider>(context, listen: false).getLaunchesList();
-    await Provider.of<LaunchProvider>(context, listen: false)
-        .fetchFavouriteListInLocal();
+    if (mounted) {
+      await Provider.of<LaunchProvider>(context, listen: false)
+          .fetchFavouriteListInLocal();
+    }
     startTimer();
   }
 
+  /// It starts a timer that will call the navigateToHome() function after 2
+  /// seconds.
   void startTimer() {
     _timer = Timer(const Duration(seconds: 2), () {
       navigateToHome();
@@ -46,6 +53,8 @@ class _SplashScreenState extends State<SplashScreen> {
     super.dispose();
   }
 
+  /// It navigates to the LaunchesListScreen and removes all the previous screens
+  /// from the stack.
   void navigateToHome() async {
     Navigator.of(context).pushNamedAndRemoveUntil(
         LaunchesListScreen.routeName, (route) => false);

@@ -1,10 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-/*
-  This file included the net urls that we used for API Request.
-
-*/
-
+/// It contains all the URLs that we will be using in our app
 class URL {
   static String SERVER = "https://api.spacexdata.com/v5";
 

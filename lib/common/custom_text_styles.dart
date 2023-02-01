@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// It's a class that contains static methods that return TextStyle objects
 class CustomTextStyles {
   static TextStyle titleStyle() {
     return const TextStyle(
@@ -18,14 +19,6 @@ class CustomTextStyles {
       fontSize: 14,
       fontWeight: FontWeight.normal,
       color: Colors.black,
-    );
-  }
-
-  static TextStyle timerStyle({double size = 15}) {
-    return TextStyle(
-      fontSize: size,
-      fontWeight: FontWeight.w800,
-      color: Colors.blue,
     );
   }
 }
