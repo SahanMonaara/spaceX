@@ -32,7 +32,9 @@ class _LaunchDetailScreenState extends State<LaunchDetailScreen> {
       if (data['title'] != null) title = data['title'];
       if (data['id'] != null) id = data['id'];
       if (id != null) {
-        getLaunchesList(id!);
+        Future.delayed(Duration.zero, () async {
+          getLaunchesList(id!);
+        });
       }
       _isInit = true;
     }

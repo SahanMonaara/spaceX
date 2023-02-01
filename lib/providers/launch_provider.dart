@@ -74,14 +74,14 @@ class LaunchProvider with ChangeNotifier {
   /// Args:
   ///   id (String): The id of the product that is being tapped.
   tapOnFavourite(String id) {
-    bool isAlreadyfavourite = favouriteList.any((element) => element == id);
-    if (isAlreadyfavourite) {
+    bool isAlreadyFavourite = favouriteList.any((element) => element == id);
+    if (isAlreadyFavourite) {
       favouriteList.remove(id);
     } else {
       favouriteList.add(id);
     }
     saveFavouriteListInLocal();
-    Log.debug('--favourite list--${favouriteList}');
+    Log.debug('--favourite list--$favouriteList');
     notifyListeners();
   }
 
@@ -118,9 +118,9 @@ class LaunchProvider with ChangeNotifier {
     if (jsonList != null) {
       var data = json.decode(jsonList);
       Log.debug(" fetched from local--${data[AppConst.FAVOURITE_LIST]}");
-      (data[AppConst.FAVOURITE_LIST] as List).forEach((element) {
+      for (var element in (data[AppConst.FAVOURITE_LIST] as List)) {
         favouriteList.add('$element');
-      });
+      }
       Log.debug("initial favourite list fetched from local--$favouriteList");
       notifyListeners();
     }
